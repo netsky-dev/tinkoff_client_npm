@@ -1,0 +1,20 @@
+{
+  "name": "tinkoff_client",
+  "version": "1.0.0",
+  "description": " Tinkoff Javscript API wrapper for payments and e2c payouts ",
+  "main": "TinkoffClient.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tinkoff",
+    "payment",
+    "payout"
+  ],
+  "author": "netsky-dev",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  }
+}
