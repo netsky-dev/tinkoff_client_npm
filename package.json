@@ -1,6 +1,6 @@
 {
   "name": "tinkoff_client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": " Tinkoff Javascript API wrapper for payments and e2c payouts ",
   "main": "TinkoffClient.js",
   "type": "module",
