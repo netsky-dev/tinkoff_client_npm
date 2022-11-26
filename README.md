@@ -39,7 +39,7 @@ If you do not have your own payment form, to make a payment, simply call the ini
 ```javascript
 import TinkoffClient from 'tinkoff_client';
 
-const result = await TinkoffClient.Payout.init({ Amount: "1000", OrderId: 3000 });
+const result = await TinkoffClient.Payment.init({ Amount: "1000", OrderId: 3000 });
 ```
 
 and every method return for you object response for example method init return this
