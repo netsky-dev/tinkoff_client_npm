@@ -45,23 +45,28 @@ const result = await TinkoffClient.Payment.init({ Amount: "1000", OrderId: 3000 
 and every method return for you object response for example method init return this
 
 ```javascript
-{"Success"=>true,
- "ErrorCode"=>"0",
- "TerminalKey"=>"1111111111",
- "Status"=>"NEW",
- "PaymentId"=>"123456789",
- "OrderId"=>"3331",
- "Amount"=>1000,
- "PaymentURL"=>"https://securepayments.tinkoff.ru/q2wER3t0"}
+{
+  Success: true,
+  ErrorCode: '0',
+  TerminalKey: '1111111111',
+  Status: 'NEW',
+  PaymentId: '123456789',
+  OrderId: '3000',
+  Amount: 1000,
+  PaymentURL: 'https://securepayments.tinkoff.ru/q2wER3t0'
+}
+
  ```
 
 or something like this
 
 ```javascript
- {"Success"=>false, 
- "ErrorCode"=>"9999", 
- "Message"=>"Неверные параметры.", 
- "Details"=>"Поле OrderId не должно быть пустым."}
+ {
+  Success: false, 
+  ErrorCode: '9999', 
+  Message:'Неверные параметры', 
+  Details: 'Поле OrderId не должно быть пустым.'
+ }
  ```
 
 
