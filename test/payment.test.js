@@ -1,62 +1,55 @@
 import TinkoffClient from '../TinkoffClient';
+import { jest } from '@jest/globals'
 
-let client = await TinkoffClient.Payment.init({ Amount: "1000", OrderId: 2000 })
+import Request from '../lib/payment/Request';
 
-test('should TinkoffClient.Payment.init return response', async () => {
- expect(client).not.toBe(null);
- expect(client.Success).toEqual(true)
+let data = { data: true };
+Request.prototype.request = jest.fn().mockImplementation(() => data);
+
+beforeEach(() => {
+ Request.prototype.request.mockClear();
 });
 
-test('should TinkoffClient.Payment.confirm return response', async () => {
- let result = await TinkoffClient.Payment.confirm({ PaymentId: client.PaymentId })
- expect(result).not.toBe(null);
- expect(result.Success).toEqual(false)
- expect(result.Details).toEqual('Изменение статуса недопустимо.')
-});
+test("calls TinkoffClient.Payment.init", () => {
+ let keys = { Amount: "1000", OrderId: 3000 }
+ expect(TinkoffClient.Payment.init(keys)).toStrictEqual(data)
 
-test('should TinkoffClient.Payment.get_state return status of payment', async () => {
- let result = await TinkoffClient.Payment.get_state({ PaymentId: client.PaymentId })
- expect(result).not.toBe(null);
- expect(result.Success).toEqual(true)
- expect(result.Status).toEqual('NEW')
-});
-
-test('should TinkoffClient.Payment.cancel return canceled payment', async () => {
- let result = await TinkoffClient.Payment.cancel({ PaymentId: client.PaymentId })
- expect(result).not.toBe(null);
- expect(result.Success).toEqual(true)
- expect(result.Status).toEqual('CANCELED')
-});
-
-test('should TinkoffClient.Payment.check_order return order status', async () => {
- let result = await TinkoffClient.Payment.check_order({ OrderId: client.OrderId })
- expect(result).not.toBe(null);
- expect(result.Success).toEqual(true)
- expect(result.Payments).not.toBe(null);
-
+ expect(Request.prototype.request).toHaveBeenCalledWith({ path: "Init", keys });
 });
 
 
-test('should TinkoffClient.Payment.send_closing_receipt send closed check to checkout', async () => {
- let init_params = {
-  Amount: "333", OrderId: 2002,
-  Receipt: {
-   Email: "test@test.ru", Taxation: "osn",
-   Items: [{
-    Name: "test", Quantity: "2",
-    Amount: "333", Price: "333",
-    Tax: "vat20", PaymentMethod: "full_payment",
-    PaymentObject: "lottery_prize"
-   }]
-  }
- }
+test("calls TinkoffClient.Payment.confirm", () => {
+ let keys = { PaymentId: "1000" }
+ expect(TinkoffClient.Payment.confirm(keys)).toStrictEqual(data)
 
- let init = await TinkoffClient.Payment.init(init_params)
- expect(client).not.toBe(null);
- expect(client.Success).toEqual(true)
+ expect(Request.prototype.request).toHaveBeenCalledWith({ path: "Confirm", keys });
+});
 
 
- let receipt_params = {
+test("calls TinkoffClient.Payment.get_state", () => {
+ let keys = { PaymentId: "1000" }
+ expect(TinkoffClient.Payment.get_state(keys)).toStrictEqual(data)
+
+ expect(Request.prototype.request).toHaveBeenCalledWith({ path: "GetState", keys });
+});
+
+test("calls TinkoffClient.Payment.cancel", () => {
+ let keys = { PaymentId: "1000" }
+ expect(TinkoffClient.Payment.cancel(keys)).toStrictEqual(data)
+
+ expect(Request.prototype.request).toHaveBeenCalledWith({ path: "Cancel", keys });
+});
+
+
+test("calls TinkoffClient.Payment.check_order", () => {
+ let keys = { OrderId: "1000" }
+ expect(TinkoffClient.Payment.check_order(keys)).toStrictEqual(data)
+
+ expect(Request.prototype.request).toHaveBeenCalledWith({ path: "CheckOrder", keys });
+});
+
+test("calls TinkoffClient.Payment.send_closing_receipt", () => {
+ let keys = {
   PaymentId: "1986709080",
   Receipt: {
    Email: "test@test.ru", Taxation: "osn",
@@ -68,25 +61,9 @@ test('should TinkoffClient.Payment.send_closing_receipt send closed check to che
    }]
   }
  }
+ expect(TinkoffClient.Payment.send_closing_receipt(keys)).toStrictEqual(data)
 
- let result = await TinkoffClient.Payment.send_closing_receipt(receipt_params)
- expect(result).not.toBe(null);
- expect(result.Message).toEqual('[receiptRequestDTO: Закрывающие чеки формируются только для оплаченных платежей]');
-
+ expect(Request.prototype.request).toHaveBeenCalledWith({ path: "SendClosingReceipt", keys });
 });
 
-test('should TinkoffClient.Payment.finish_authorize return order Success status', async () => {
- let params = {
-  PaymentId: client["PaymentId"],
-  Card: {
-   PAN: 5545454545454545,
-   ExpDate: 4545,
-   CardHolder: "IVAN PETROV",
-   CVV: "111"
-  }
- }
- let result = await TinkoffClient.Payment.finish_authorize(params)
- expect(result).not.toBe(null);
-
-});
 

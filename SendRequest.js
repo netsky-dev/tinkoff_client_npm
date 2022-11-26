@@ -18,10 +18,6 @@ const checkStatus = response => {
 const TinkoffClient = {
  SendRequest: {
 
-  init_params() {
-   super.init_params;
-  },
-
   async request({ path, keys }) {
    let url = this.url + path;
    let payload = this.init_params(keys);
